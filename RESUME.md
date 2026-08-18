@@ -7,6 +7,7 @@ Contact
 - LinkedIn: www.linkedin.com/in/melveen-janeen-camba-70b78952
 
 Summary
+
 Pursuing the Shidler EMBA-HC AND DNP program at UH Mānoa will deepen my ability to scale effective occupational health models. I intend to strengthen skills in strategic planning, financial management, and operations so I can design programs that are clinically sound, economically sustainable, and replicable across diverse industries and communities in Hawaiʻi. By combining advanced clinical practice with business acumen, I will advance workplace health initiatives that protect workers, reduce organizational risk, and promote community resilience.
 
 Experience
