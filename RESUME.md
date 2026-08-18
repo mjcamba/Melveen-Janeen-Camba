@@ -15,7 +15,7 @@ Experience
 - Occupational Health Nurse, CAREonsite, October 2017 – Present
   - Lead occupational health clinic operations, managing employee injuries, illnesses, disability cases, and return-to-work programs. Partner with leaders, safety teams, and physicians to ensure regulatory compliance and effective workplace health initiatives. Coordinate fitness-for-duty evaluations, case management, telemedicine services, and occupational health surveillance programs. Promote employee wellness through health education, vaccine clinics, biometric screenings, and annual health and safety events.
 
-- Faculty, University of Hawaiʻi at Mānoa School of Nursing, June 2024 – Present
+- Casual Lecturer/Faculty, University of Hawaiʻi at Mānoa School of Nursing, June 2024 – Present
   - Teach graduate-level courses in public health preparedness and health policy.
   - Facilitate fieldwork experiences that strengthen emergency response, leadership, and population health competencies.
   - Mentor advanced nursing students in policy analysis, advocacy, and evidence-based practice.
