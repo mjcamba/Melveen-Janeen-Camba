@@ -1,27 +1,24 @@
 # BIO
 
-Hi — I’m Melveen‑Janeen Camba (mjcamba). I build software and tools that help teams move faster and make data easier to understand. I enjoy working across the stack, from designing clean APIs and data models to crafting user-friendly interfaces.
+Hi — I’m Melveen‑Janeen Camba (mjcamba). I am an Occupational and Environmental Health Nurse, an advocate for safe and healthy environments, working to improve the health and well-being for employees and communities.  Committed to caring for people and keeping them safe. 
 
 Background
 
-- Professional software engineer with experience in full‑stack development, web applications, and open-source projects.
-- Comfortable with TypeScript/JavaScript, modern frontend frameworks, backend services, and basic DevOps workflows.
+- Advanced Population Health Nurse with leadership, organizational, and interpersonal skills committed.
 
 What I care about
 
-- Clear, maintainable code and developer ergonomics.
-- Building accessible and inclusive user experiences.
-- Learning and applying practical data-driven approaches to product problems.
+- Building a healthy and safe communities through education and training development
+- Protecting employees from workplace hazards, reducing injuries, and promoting preventative health programs.
+- Designing community-based interventions, leveraging data to inform health strategies and leading initiatives that promote resilience among vulnerable populations.
 
 Interests & side projects
 
-I contribute to and maintain projects on GitHub, experiment with new languages and tools, and mentor other developers when I can. I also enjoy writing short technical posts explaining tricky topics in simple terms.
+I am part of the Asian American Pacific Island Nursing Association, the Alliance of Nurses and Healthy Environments, and partner with communities on grassroot efforts and ways to promote community engagement with a population health focused lens.  I find balance by running, practicing mindfulness, and supporting local farmers' markets.
 
 Contact
 
 - GitHub: https://github.com/mjcamba
-- Email: mjcamba@example.com (replace with your preferred email)
+- Email: mjcamba@hawaii.edu 
 
-Draft notes
 
-This is a first draft intended for use on project READMEs, a personal site, or a professional profile. Tell me what to change (tone, length, more/less technical detail, add awards or publications, etc.).
