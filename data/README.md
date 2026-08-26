@@ -1,0 +1,3 @@
+# Data
+
+This directory contains data files for the project.
