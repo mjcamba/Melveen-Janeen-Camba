@@ -12,5 +12,3 @@ I'm an Occupational and Environmental Health Nurse with a passion for building s
 | **Prompt Log** | [prompt-log.md](prompt-log.md) |
 
 ---
-
-Hello everyone! This is my public GitHub. Here you will find my complete bio, resume, and project work.
