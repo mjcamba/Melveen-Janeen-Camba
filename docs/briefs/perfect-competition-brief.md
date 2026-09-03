@@ -1,43 +1,5 @@
-# Perfect Competition Brief
+What decision the farm faces?  The farm needs to decide how to use one-36-week growing season across 64 market-garden beds of tomatoes, carrots, and mesclun.  The farm has $20,000 in fixed costs,  one farmer with 720 field hours, and access to four temporary workers with 1,440 hours each.  The problem is deciding how many beds of tomatoes, carrots, and mesclun to plant.  The prices ($8,800 a bed for tomatoes, $2,094 for carrots, $2,700 for mesclun), the per-crop bed caps of 20/20/30.  The constraint is labor especially since ach additional bed of a crop makes every crop more labor intensive.
 
-## Overview
-
-This brief covers the economic model of perfect competition, including its key characteristics, assumptions, and real-world implications.
-
-## Key Characteristics
-
-- Large number of buyers and sellers
-- Homogeneous products
-- Free entry and exit from the market
-- Perfect information for all participants
-- No transaction costs
-- Price-takers (not price-makers)
-
-## Market Dynamics
-
-### Short Run
-- Firms can earn economic profits or losses
-- Price equals marginal cost (P = MC)
-- Quantity adjusts to market equilibrium
-
-### Long Run
-- Free entry eliminates economic profits
-- All firms earn zero economic profit
-- Productive efficiency is achieved
-
-## Real-World Applications
-
-Perfect competition is a theoretical benchmark. Few markets exhibit all characteristics, but some approach it:
-- Agricultural commodity markets
-- Foreign exchange markets
-- Stock exchanges
-
-## Limitations
-
-- Unrealistic assumptions about information and homogeneity
-- Ignores transaction costs and barriers to entry
-- Most real markets have some degree of market power
-
----
-
-*This brief can be expanded with specific examples, diagrams, or mathematical models as needed.*
+My exact expected crop mix:  My prediction is that the farm will plant 14 tomato beds, 20 carrot beds, and 30 mesclun beds.  I predict carrots and mesclun to reach their bed caps because their labor requirements rise more slowly.  
+Why this mix follows from the case numbers?  The mechanism that decides this case is the marginal labor cost that rises as the bed count for a crop rises. The labor hours for q beds of a crop are q x hours-per week per bed x 36 (1 +rate)^q, where tomato labor rises by 10 percent per bed, 2.5 percent for carrots, and 1.25 percent for mesclun, which rise gradually.  Tomato beds become more expensive in terms of labor.  The case says the 20th tomato bed requires 6.7 times the labor per bed of the first, so I do not predict that all 20 tomato beds should be worth planting. It would be capped.
+What result would prove my prediction wrong?  I would know my prediction is wrong if tomatoes reach the full 20-bed cap.  This will tell me that I have underestimated the value of the tomatoes revenue relative to the 10 percent labor cost.  Secondly, I would prove myself wrong that carrots are stopped by the bed cap if carrots finish below 20 beds.  Third, I can show that I overestimated the low labor growth if mesclun finishes below 30 beds compared with its $2,700 price.  These results would show my hypothesis would be incorrect in regards to which crops are limited by marginal cost and which are limited by bed caps.
