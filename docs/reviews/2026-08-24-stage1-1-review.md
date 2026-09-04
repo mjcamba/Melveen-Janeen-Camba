@@ -1,51 +1,36 @@
-<!-- PR TARGET: https://github.com/mjcamba/Melveen-Janeen-Camba | Stage 1.1 (2.5 pts) -->
-# Stage 1.1 review — engagement brief · **11 / 100** (F) · 0.28 / 2.5 pts
+<!-- PR TARGET: https://github.com/mjcamba/Melveen-Janeen-Camba | Stage 1.1 -->
+# Stage 1.1 review — engagement brief
 
 **Brief:** [`docs/briefs/perfect-competition-brief.md`](https://github.com/mjcamba/Melveen-Janeen-Camba/blob/main/docs/briefs/perfect-competition-brief.md)
 
-> Graded 2026-08-27. I am not entering this score. The file is committed at the right path and the writing in it is accurate — but it answers a different question from the one this stage asks, and a number like this on work that is really a misunderstanding would be the wrong record of what happened. Nothing is due yet. Read the first section, rewrite it, and I will re-grade from scratch.
+> Re-graded 2026-09-04 against your rewrite of 3 September. The previous pass was a hold rather than a grade, because the brief was about a different scenario entirely. You rewrote it for this case and it is a genuinely good brief. As promised, there is no penalty for the delay.
 
-| Criterion | Earned | Notes |
-|---|---|---|
-| Problem restated in your own voice | 5 / 30 | What you have written is a correct textbook summary of perfect competition as a market structure — many buyers and sellers, homogeneous products, free entry and exit, price takers, zero economic profit in the long run. None of that is wrong. But it is not the farm's problem. The brief never mentions the farmer, the 64 beds, tomatoes, carrots, mesclun, the 36-week season, or a single figure from the case. What this criterion asks for is the specific decision in front of this specific farm, said in your words. |
-| Hypothesis names a specific mix | 0 / 25 | There is no hypothesis and no mix. This is the criterion the stage is built around, so it is where the score mostly goes. |
-| Economic mechanism | 6 / 25 | P = MC appears, and so does the price-taker point, and both are stated correctly. That is worth something and it is the part of your file to keep. What is missing is the mechanism applied to this farm: which crop stops where, and why. |
-| Falsifiability and process | 0 / 20 | There is no statement of what result would show a prediction wrong, because there is no prediction yet. Process credit where it is due — the file is at the correct path, docs/briefs/perfect-competition-brief.md, and committed with a clear message. When you rewrite it, that part is already right. |
-| **Final** | **11 / 100** | earned on merit |
+| Criterion | Where it stands |
+|---|---|
+| Problem restated in your own voice | Real and yours. You separate what is fixed from what is chosen, name the consequence, and identify the constraint correctly: "each additional bed of a crop makes every crop more labor intensive." Two things hold it back. That sentence has one word wrong — an additional bed of a crop makes every bed of *that* crop more labor intensive, not every crop; the three crops compete for the same hours but they do not inflate each other's labor requirement. And the section is compressed to a single paragraph where the stage asks for closer to half a page, so several things are named without being developed — most notably what it actually costs the farm to get this wrong. |
+| Hypothesis names a specific mix | 14 tomato, 20 carrot, 30 mesclun, totalling exactly 64. Three real integers, every one inside its cap, and you say which crops you expect to be stopped by their cap rather than by economics. That is precisely what this criterion asks for. |
+| Economic mechanism | You transcribed the labor engine correctly — "q x hours-per week per bed x 36 (1 +rate)^q" — with the exponent on q, which is the single thing most likely to be got wrong in this case and which two finished workbooks in this cohort still get wrong. You then use it: the twentieth tomato bed needs about 6.7 times the labor of the first, so you do not expect all 20 to be worth planting. That is a real argument. What is still open is that you attribute the 6.7 figure to the case — the case gives you the 10% rate and you have to raise 1.10 to the twentieth yourself to get 6.7. It is your arithmetic and you should claim it. And 14 is never derived; you argue tomatoes stop short of the cap without arguing for 14 in particular. |
+| Falsifiability and process | Three conditions, each naming an outcome the model could produce and the claim it would break, and a closing sentence that ties all three back to the same underlying question — which crops are limited by marginal cost and which by their bed cap. That framing is better than the conditions themselves. What is still open is that none carries a tolerance: "if tomatoes reach the full 20-bed cap" treats 19 beds and 20 beds as completely different verdicts when they are almost the same result. |
 
-### What happened, and why i am not entering a score
+### What changed, and why it matters more than the number
 
-This reads as a brief written about the topic rather than about the case. Perfect competition is the economics the case is teaching; the assignment is to apply it to one farm and commit to a number. It is a very easy assignment to misread that way, and the file you produced would be a good answer to "explain perfect competition" — which is not what was asked.
+Your previous brief was about a different scenario. That was a hold rather than a grade precisely because it reads as a misread assignment rather than weak work — and the rewrite confirms it. This brief has a correct labor function, a committed mix, a mechanism that uses the rates, and three falsification conditions. That is the whole deliverable.
 
-One detail that tells you the same thing: the last line of the file reads "This brief can be expanded with specific examples, diagrams, or mathematical models as needed." That is an assistant offering to continue, left in the committed version. When you see a sentence like that in your own file, it usually means the draft stopped before the thinking started.
+It is also worth saying that you did this after the review had been sitting unread for a while. The pull request notifications were not reaching anyone in this cohort — that was my fault, not yours, and it is fixed now.
 
-You went from 80 to 97 on Stage 0 in a single session by doing exactly what the feedback asked, item by item. This is the same kind of task. The list below is what to write.
+### The one sentence to fix, and it is a real distinction
 
-### What the brief needs to say
+"Each additional bed of a crop makes every crop more labor intensive."
 
-Half a page to a page. Replace what is there; do not add to it.
+It makes every bed of *that* crop more labor intensive. Planting an eleventh tomato bed does not make your carrots harder to grow.
 
-- State the farm's problem in your own words. A market garden has 64 beds and one 36-week season. It must choose how many beds of tomatoes, carrots, and mesclun to plant. What is fixed: the season, $20,000 of fixed costs, the prices ($8,800 a bed for tomatoes, $2,094 for carrots, $2,700 for mesclun), the per-crop bed caps of 20 / 20 / 30, the farmer's 720 field hours, and up to four temporary workers at 1,440 hours each. What is chosen: the three bed counts. What limits the choice: labor, and the fact that each additional bed of a crop makes every bed of that crop more labor-hungry.
+The distinction matters because it is the difference between three separate compounding curves and one shared one. The crops interact only through the shared pool of hours and the shared 64 beds — not through each other's labor rate. When you build the model in Stage 1.2 you will write three independent labor schedules and then add them up, and if you were thinking of it the other way the structure would come out wrong.
 
-- Name a specific mix. "I expect X tomato beds, Y carrot beds, Z mesclun beds." Real integers. Not a range, not percentages, not "a balanced mix."
+### What to carry into Stage 1.2
 
-- Say why, using the case's numbers. The mechanism that decides this case is diminishing returns: labor hours for q beds of a crop are q x hours-per-week-per-bed x 36 x (1 + rate)^q, where the rate is 10 percent a bed for tomatoes, 2.5 percent for carrots, and 1.25 percent for mesclun. That compounding is why marginal cost rises, and why the answer is not simply "plant the crop with the highest price." Tomatoes earn $8,800 a bed against carrots' $2,094 — but the 20th tomato bed costs roughly 6.7 times the labor per bed of the first. Say which crops you think stop because marginal cost catches the price, and which stop because they run into a bed cap.
+You now have capabilities/marginal-analysis/ with a README, which closed the last gap in your Stage 0. The specification goes in the same folder and the stage is due 6 September.
 
-- Say how you would know you were wrong. Two or three named outcomes, each tied to the assumption it would break. "If carrots finish below their 20-bed cap, then something other than the cap stopped them, and my reasoning about diminishing returns is wrong." A prediction that survives every possible result is not a prediction.
-
-- Log the AI critique in prompt-log.md. The stage asks you to have a draft attacked — ask a model to name your unstated assumptions and to judge whether your hypothesis is falsifiable, and to not rewrite anything. Then make the changes in your own words and record the session.
-
-### Why the order matters
-
-This stage is graded before the model exists, and that is deliberate. A prediction written before the model runs can be shown wrong. The same sentence written afterwards is a summary of the output and it teaches you nothing, because you can no longer tell "I understood the economics" from "I read the answer cell." Stage 3 asks you to compare what you predicted against what the model found, and that comparison cannot be reconstructed later.
-
-A wrong hypothesis, precisely reasoned, is worth as much here as a correct one and considerably more than a lucky one. Do not try to guess the right answer. Say what you actually expect and why, and let the model disagree with you.
-
-### Looking ahead
-
-Stage 1.2 asks for capabilities/marginal-analysis/spec.md, written before the workbook exists. Your capabilities/ folder has a README but no capability folder inside it yet — that is the one canonical path still missing from your Stage 0, and it is where this next deliverable goes. Create capabilities/marginal-analysis/README.md when you get a moment and both problems close at once.
-
-The reasoning you put in this brief is the reasoning that spec runs on, so it is worth the hour.
+Your 6.7 multiplier is the seed of a validation rule. In the workbook it becomes a hand-check: labor hours for one tomato bed must come to 1 x 2.50 x 36 x 1.10 = 99 exactly, and for ten beds to 10 x 2.50 x 36 x 1.10^10 = 2,334.37. The second one is the check that catches a builder who applies the rate once instead of compounding it, which is the defect your own sentence already guards against.
 
 ---
 
@@ -55,9 +40,11 @@ Treat this PR the way an analyst treats feedback from a senior reviewer — a re
 
 1. **Read it yourself first.** Form your own view before you change anything. Disagreeing *with a documented reason* is a legitimate, senior response.
 2. **Stress-test it with an LLM.** Paste this review and your brief into your assistant and ask it to (a) explain anything you are unsure of, and (b) argue the *other side* — where might the reviewer be wrong, and what would you give up by making each change.
-3. **Then write the changes yourself.** For a brief, this matters more than usual: a hypothesis you did not generate cannot be honestly compared against your model in Stage 3, and that comparison is the entire point of writing the brief first.
+3. **Then write the changes yourself.** For a brief this matters more than usual: a hypothesis you did not generate cannot be honestly compared against your model in Stage 3, and that comparison is the entire point of writing the brief first.
 4. **Close the loop.** Reply in this thread with what you changed and what you pushed back on, then commit and push.
 
-*One standing rule for this stage: do not revise your hypothesis to match what your model later tells you. If the model contradicts the brief, that is a finding, not an error — Stage 3 asks you to explain the gap, and a brief quietly edited to be right afterwards has nothing left to explain.*
+*One standing rule: do not revise your hypothesis to match what your model later tells you. If the model contradicts the brief, that is a finding, not an error.*
+
+*Your score and the per-criterion breakdown are in your Lamaku comment, not here — this repository is public.*
 
 — Adam
