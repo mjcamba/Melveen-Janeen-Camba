@@ -448,3 +448,193 @@ TOM_MC_SCHEDULE
 CAR_MC_SCHEDULE
 
 MES_MC_SCHEDULE
+
+# Audit Findings
+
+## Audit Summary
+
+The generated workbook was reviewed against the validation rules and published acceptance criteria defined in this specification. Several checks failed, indicating that the generated workbook does not yet faithfully implement the specified model and requires regeneration from the revised specification. 【1-e1001b】
+
+---
+
+## Check 1: q = 1 Tomato Labor Verification
+
+### What I Checked
+
+Verified the labor function using the required hand calculation:
+
+LABOR_HRS(1)
+
+= 1 × 2.5 × 36 × 1.10
+
+= 99 labor hours
+
+### What It Would Catch
+
+A dropped exponent, omitted diminishing-return factor, or incorrect labor-hours formula.
+
+### Result
+
+Unable to conclusively verify from workbook outputs alone. The workbook should return 99 labor hours for a single tomato bed if the specified formula is implemented correctly.
+
+### Action Taken
+
+Flagged for verification during workbook rebuild.
+
+---
+
+## Check 2: Farm Profit Lab Cross-Check
+
+### What I Checked
+
+Compared workbook behavior against the Farm Profit Lab implementation by reviewing intermediate model outputs.
+
+### What It Would Catch
+
+Incorrect labor calculations, marginal-cost calculations, labor allocations, or cost relationships.
+
+### Result
+
+Workbook outputs do not align with expected Farm Profit Lab behavior. Current values produced by the workbook include:
+
+- Revenue = $83,316
+- Labor Cost = $117,609.66
+- Profit = -$101,727.43
+
+These results are inconsistent with the published solution. 【1-e1001b】
+
+### Action Taken
+
+Marked as failed. Model requires regeneration from the revised specification.
+
+---
+
+## Check 3: Solver Starting Point (0,0,0)
+
+### What I Checked
+
+Planned validation of Solver beginning with:
+
+- Tomatoes = 0
+- Carrots = 0
+- Mesclun = 0
+
+### What It Would Catch
+
+A local optimum being mistaken for the global optimum.
+
+### Result
+
+Unable to verify. Solver results were not included in the workbook.
+
+### Action Taken
+
+Solver configuration must be added and tested during rebuild.
+
+---
+
+## Check 4: Solver Starting Point (20,0,0)
+
+### What I Checked
+
+Planned validation of Solver beginning with:
+
+- Tomatoes = 20
+- Carrots = 0
+- Mesclun = 0
+
+### What It Would Catch
+
+Path dependence of the GRG Nonlinear algorithm.
+
+### Result
+
+Unable to verify. Solver results were not included in the workbook.
+
+### Action Taken
+
+Solver must be rerun from multiple starting points after workbook regeneration.
+
+---
+
+## Check 5: Published Acceptance Criteria
+
+### Expected Results
+
+Optimal Mix
+
+- Tomatoes = 10
+- Carrots = 20
+- Mesclun = 30
+
+Beds Used
+
+- 60
+
+Season Profit
+
+- $42,762
+
+Standalone P ≈ MC
+
+- Tomatoes ≈ 10 beds
+- Carrots ≈ 10 beds
+- Mesclun ≈ 6 beds
+
+### Actual Workbook Results
+
+- Tomatoes = 14
+- Carrots = 20
+- Mesclun = 30
+- Revenue = $83,316
+- Profit = -$101,727.43
+
+These results do not match the acceptance criteria. 【1-e1001b】
+
+### Action Taken
+
+Marked as failed. Workbook requires rebuilding from the completed specification.
+
+---
+
+## Check 6: Formula Review
+
+### What I Checked
+
+Reviewed workbook calculations for evidence of formula-driven outputs.
+
+### What It Would Catch
+
+Hard-coded values, broken references, or calculations not driven by model inputs.
+
+### Result
+
+The workbook contains calculated outputs, but several reported values are internally inconsistent:
+
+- Crop labor hours do not reconcile with total labor hours.
+- Revenue does not reconcile with reported planting quantities.
+- Profit does not reconcile with expected model behavior. 【1-e1001b】
+
+### Action Taken
+
+Workbook requires structural review and regeneration.
+
+---
+
+## Overall Conclusion
+
+Status: FAIL
+
+The generated workbook does not satisfy the acceptance criteria defined in this specification.
+
+Key findings:
+
+1. Published check figures were not reproduced.
+2. Reported season profit differs substantially from the expected result.
+3. Solver optimization was not completed or documented.
+4. Intermediate calculations are inconsistent.
+5. Cross-check against the Farm Profit Lab was unsuccessful.
+
+Corrective Action:
+
+The specification was expanded to eliminate ambiguity regarding fertilizer costs, diminishing-return percentages, labor allocation, Solver settings, validation rules, and acceptance criteria. The workbook should be regenerated from the revised specification and re-audited before submission.
