@@ -1,139 +1,450 @@
-# Marginal Analysis Capability
+## Solver Decision Variables
 
-## Summary
+The following workbook-level named ranges are Solver changing cells:
 
-This document specifies the "marginal-analysis" capability: a reusable component that computes and reports marginal effects/impacts for model outputs and input features across datasets. It is intended to support reproducible analysis workflows, clear data contracts, and integration with the repository's AI conventions described in AGENTS.md.
+TOM_BEDS
 
-## Motivation
+CAR_BEDS
 
-Marginal analysis helps quantify how changes in individual inputs affect model outputs (e.g., probability changes, predicted value deltas). This capability standardizes how marginal effects are computed, reported, and validated across projects.
+MES_BEDS
 
-## Scope
+These cells represent the number of beds planted for each crop and must be constrained as nonnegative integers.
 
-- Compute marginal effects for tabular data and models producing scalar outputs (classification probability, regression predictions).
-- Support local (per-instance) and average marginal effects (AME).
-- Produce numeric summaries, diagnostics, and optional visualizations.
-- Provide a minimal tool/CLI/API contract so other components can call it.
+---
 
-## Inputs
+## Solver Starting Points
 
-- dataset: path or in-memory representation (CSV, DataFrame) containing feature columns and optional sample weights.
-- model: a callable that accepts a batch of rows and returns model outputs (probabilities or scalar predictions). The model interface must be documented by the caller.
-- features: list of feature names to analyze.
-- baseline: for categorical or discrete features, a baseline value to compare against (optional; default: dataset mode/median where applicable).
-- deltas or value_grid: specification of changes to apply to each feature (e.g., +1, -1 for numeric; explicit set for categorical).
-- batch_size: optional, for large datasets.
-- random_seed: for deterministic sampling when using subsets.
+### Starting Point 1
 
-Input contract (example YAML):
+TOM_BEDS = 0
 
-```yaml
-dataset: data/processed/train.csv
-model: "models/predict:predict_fn" # opaque reference — caller documents how to resolve
-features:
-  - age
-  - income
-baseline:
-  age: 30
-  income: 50000
-value_grid:
-  age: [-5, 0, +5]
-  income: [0.9, 1.1]
-batch_size: 1024
-random_seed: 42
-``` 
+CAR_BEDS = 0
+
+MES_BEDS = 0
+
+### Starting Point 2
+
+TOM_BEDS = 14
+
+CAR_BEDS =20
+
+MES_BEDS = 30
+
+Solver Method:
+
+GRG Nonlinear
+
+Integer decisions required
+
+Objective: Maximize PROFIT
+
+---
+
+## Farm Inputs
+
+| Name | Value | Unit | Source |
+|--------|--------|--------|--------|
+| WEEKS | 36 | weeks | Case scenario |
+| FIXED_COSTS | 20000 | USD per season | Case scenario |
+| TOTAL_BED_CAP | 64 | beds | Case scenario |
+| FARMER_HOURS | 720 | field hours | Case scenario |
+| FARMER_SALARY | 50000 | USD per season | Case scenario |
+| FARMER_LABOR_RATE | 34.72 | USD per hour | Case scenario |
+| TEMP_WORKER_SALARY | 25000 | USD per season | Case scenario |
+| TEMP_LABOR_RATE | 17.36 | USD per hour | Case scenario |
+| TEMP_WORKER_HOURS | 1440 | hours per worker per season | Case scenario |
+| TEMP_WORKER_CAP | 4 | workers | Case scenario |
+
+---
+
+## Tomato Inputs
+
+| Name | Value | Unit | Source |
+|--------|--------|--------|--------|
+| TOM_PRICE | 8800 | USD per bed | Crop table |
+| TOM_HRS | 2.50 | hours per week per bed | Crop table |
+| TOM_FERTILIZER | 880 | USD per bed | Farm Profit Lab |
+| TOM_DIM_PCT | 10.0% | diminishing-return rate | Farm Profit Lab |
+| TOM_MAX_BEDS | 14 | beds | Crop table |
+
+---
+
+## Carrot Inputs
+
+| Name | Value | Unit | Source |
+|--------|--------|--------|--------|
+| CAR_PRICE | 2094 | USD per bed | Crop table |
+| CAR_HRS | 0.83 | hours per week per bed | Crop table |
+| CAR_FERTILIZER | 440 | USD per bed | Farm Profit Lab |
+| CAR_DIM_PCT | 2.5% | diminishing-return rate | Farm Profit Lab |
+| CAR_MAX_BEDS | 20 | beds | Crop table |
+
+---
+
+## Mesclun Inputs
+
+| Name | Value | Unit | Source |
+|--------|--------|--------|--------|
+| MES_PRICE | 2700 | USD per bed | Crop table |
+| MES_HRS | 1.25 | hours per week per bed | Crop table |
+| MES_FERTILIZER | 880 | USD per bed | Farm Profit Lab |
+| MES_DIM_PCT | 1.25% | diminishing-return rate | Farm Profit Lab |
+| MES_MAX_BEDS | 30 | beds | Crop table |
+
+---
+
+## Calculation Logic
+
+### Crop Labor Functions
+
+TOM_LABOR_HRS(q) =
+q × TOM_HRS × WEEKS × (1 + TOM_DIM_PCT)^q
+
+CAR_LABOR_HRS(q) =
+q × CAR_HRS × WEEKS × (1 + CAR_DIM_PCT)^q
+
+MES_LABOR_HRS(q) =
+q × MES_HRS × WEEKS × (1 + MES_DIM_PCT)^q
+
+### Calculated Crop Labor
+
+TOM_LABOR_HOURS =
+TOM_LABOR_HRS(TOM_BEDS)
+
+CAR_LABOR_HOURS =
+CAR_LABOR_HRS(CAR_BEDS)
+
+MES_LABOR_HOURS =
+MES_LABOR_HRS(MES_BEDS)
+
+### Revenue
+
+TOM_REVENUE =
+TOM_BEDS × TOM_PRICE
+
+CAR_REVENUE =
+CAR_BEDS × CAR_PRICE
+
+MES_REVENUE =
+MES_BEDS × MES_PRICE
+
+TOTAL_REVENUE =
+TOM_REVENUE +
+CAR_REVENUE +
+MES_REVENUE
+
+### Fertilizer Costs
+
+TOM_FERT_COST =
+TOM_BEDS × TOM_FERTILIZER
+
+CAR_FERT_COST =
+CAR_BEDS × CAR_FERTILIZER
+
+MES_FERT_COST =
+MES_BEDS × MES_FERTILIZER
+
+TOTAL_FERTILIZER_COST =
+TOM_FERT_COST +
+CAR_FERT_COST +
+MES_FERT_COST
+
+### Total Labor
+
+TOTAL_LABOR_HOURS =
+TOM_LABOR_HOURS +
+CAR_LABOR_HOURS +
+MES_LABOR_HOURS
+
+### Labor Allocation
+
+PERM_HRS_USED =
+MIN(TOTAL_LABOR_HOURS, FARMER_HOURS)
+
+TEMP_HRS =
+MAX(TOTAL_LABOR_HOURS − FARMER_HOURS, 0)
+
+TEMP_WORKERS_NEEDED =
+TEMP_HRS / TEMP_WORKER_HOURS
+
+### Labor Cost
+
+LABOR_COST =
+(PERM_HRS_USED × FARMER_LABOR_RATE)
++
+(TEMP_HRS × TEMP_LABOR_RATE)
+
+### Blended Labor Rate
+
+BLENDED_RATE =
+LABOR_COST / TOTAL_LABOR_HOURS
+
+### Crop Labor Allocation
+
+TOM_LABOR_COST =
+TOM_LABOR_HOURS × BLENDED_RATE
+
+CAR_LABOR_COST =
+CAR_LABOR_HOURS × BLENDED_RATE
+
+MES_LABOR_COST =
+MES_LABOR_HOURS × BLENDED_RATE
+
+### Total Cost
+
+TOTAL_COST =
+LABOR_COST +
+TOTAL_FERTILIZER_COST +
+FIXED_COSTS
+
+### Profit
+
+PROFIT =
+TOTAL_REVENUE
+− LABOR_COST
+− TOTAL_FERTILIZER_COST
+− FIXED_COSTS
+
+### Constraint Calculations
+
+TOTAL_BEDS =
+TOM_BEDS +
+CAR_BEDS +
+MES_BEDS
+
+BEDS_CHECK =
+IF(TOTAL_BEDS <= TOTAL_BED_CAP,"PASS","FAIL")
+
+TEMP_CHECK =
+IF(TEMP_WORKERS_NEEDED <= TEMP_WORKER_CAP,"PASS","FAIL")
+
+### Marginal Cost Schedules
+
+MC(q) =
+TOTAL_COST(q) − TOTAL_COST(q−1)
+
+Calculate for:
+
+1 through TOM_MAX_BEDS
+
+1 through CAR_MAX_BEDS
+
+1 through MES_MAX_BEDS
+
+---
+
+## Definitions
+
+### Marginal Cost Schedule
+
+A table showing MC(q) for each crop from bed quantity 1 through the crop's maximum bed limit.
+
+### Marginal Cost
+
+MC(q) =
+TOTAL_COST(q) − TOTAL_COST(q−1)
+
+### Standalone P ≈ MC Point
+
+The largest bed quantity q at which:
+
+PRICE_PER_BED ≥ MC(q)
+
+when evaluating that crop independently from the other crops.
+
+### Binding Constraint
+
+A constraint is binding when it is satisfied exactly at the optimal solution and prevents additional profit-generating activity.
+
+### Optimization Run
+
+One complete Solver execution using a specified starting point and the GRG Nonlinear solving method.
+
+### Solver Solution
+
+The final values returned by Solver for the decision variables.
+
+### Acceptance Criteria
+
+The published check figures and validation rules that the workbook must satisfy.
+
+### Constraint-Check Cell
+
+A workbook cell that displays PASS or FAIL based on whether a specified constraint is satisfied.
+
+---
+
+## Conventions
+
+1. The farmer's labor is consumed first.
+
+2. The first 720 field hours are permanent labor.
+
+3. Any labor beyond 720 hours is temporary labor.
+
+4. Permanent labor is costed before temporary labor.
+
+5. Labor is allocated to crops using the blended labor rate.
+
+6. Crop labor allocation must not use separate labor rates by crop.
+
+7. Solver uses GRG Nonlinear.
+
+8. Decision variables must be integers.
+
+9. Bed counts cannot be negative.
+
+10. All currency values are USD.
+
+11. All displayed values use standard Excel rounding for presentation.
+
+12. All calculations use full precision.
+
+13. TEMP_WORKERS_NEEDED may be fractional.
+
+14. Temporary workers are not rounded for calculations.
+
+15. Season profit must equal $42,762 when rounded to the nearest whole dollar.
+
+16. All optimization outputs are the final Solver solution values.
+
+17. The authoritative bed caps are:
+
+TOM_MAX_BEDS = 14
+
+CAR_MAX_BEDS = 20
+
+MES_MAX_BEDS = 30
+
+These limits override conflicting values from other materials.
+
+---
+
+## Validation Rules
+
+### Structural Validation
+
+- No #REF! errors
+- No #DIV/0! errors
+- No #NAME? errors
+- No #VALUE! errors
+- No #N/A errors
+- Every calculated cell contains a formula
+
+### Hand Calculation
+
+Tomato labor at q = 1:
+
+1 × 2.5 × 36 × 1.10
+
+= 99 labor hours
+
+Must match workbook calculation.
+
+### Constraint Checks
+
+TOTAL_BEDS <= 64
+
+TEMP_WORKERS_NEEDED <= 4
+
+Constraint cells must display PASS or FAIL.
+
+### Intermediate MC Cross-Check
+
+Compare at least one marginal-cost value generated by the workbook with the corresponding value from the Farm Profit Lab.
+
+Values must agree within normal spreadsheet rounding tolerance.
+
+### Solver Validation
+
+Run Solver from:
+
+0 / 0 / 0
+
+and
+
+20 / 0 / 0
+
+Record whether results match.
+
+---
+
+## Acceptance Criteria
+
+Optimal Mix
+
+Tomatoes = 10 beds
+
+Carrots = 20 beds
+
+Mesclun = 30 beds
+
+Beds Used
+
+60
+
+Season Profit
+
+$42,762 when rounded to the nearest whole dollar
+
+Standalone P ≈ MC
+
+Tomatoes ≈ 10 beds
+
+Carrots ≈ 10 beds
+
+Mesclun ≈ 6 beds
+
+---
 
 ## Outputs
 
-- numeric summary table (CSV/JSON) with columns: feature, perturbed_value, baseline_value, mean_output_change, std_output_change, ci_lower, ci_upper, sample_count
-- per-instance marginal effects (optional, large) as parquet/ndjson
-- diagnostic plots (e.g., marginal effect vs. feature value, distribution of changes)
-- human-readable report (Markdown) describing methods, assumptions, and key findings
+OPT_TOM_BEDS = final Solver value of TOM_BEDS
 
-Output contract (example):
+OPT_CAR_BEDS = final Solver value of CAR_BEDS
 
-- capabilities/marginal-analysis/results/<run-id>/summary.json
-- capabilities/marginal-analysis/results/<run-id>/per_instance.parquet
-- capabilities/marginal-analysis/results/<run-id>/report.md
+OPT_MES_BEDS = final Solver value of MES_BEDS
 
-## Methods / Algorithms
+TOTAL_BEDS
 
-- Finite-difference approach for numeric features: evaluate model at x and x + delta then compute difference.
-- One-hot replacement for categorical features: set feature to each category value and compute change from baseline.
-- For probability outputs, report absolute and relative change as appropriate.
-- Support sample-weighted averages when sample weights supplied.
-- Bootstrap (configurable n_bootstrap) to provide confidence intervals on mean effects.
+TOTAL_REVENUE
 
-Implementation notes:
-- Avoid changing correlated features unless the caller intentionally supplies counterfactual rebalancing logic.
-- For correlated features, include a warning and offer an optional conditional marginal approach (requires model or conditional sampler).
+TOM_LABOR_HOURS
 
-## API / CLI
+CAR_LABOR_HOURS
 
-Provide a minimal CLI wrapper and a programmatic function signature example:
+MES_LABOR_HOURS
 
-Function signature (Python pseudocode):
+TOTAL_LABOR_HOURS
 
-```python
-def run_marginal_analysis(dataset, model_fn, features, *, value_grid=None, baseline=None, batch_size=1024, n_bootstrap=0, seed=None, output_dir):
-    """Runs marginal analysis and writes outputs to output_dir."""
-```
+PERM_HRS_USED
 
-CLI example:
+TEMP_HRS
 
-```bash
-python -m capabilities.marginal_analysis \
-  --dataset data/processed/test.csv \
-  --model models/predict:predict_fn \
-  --features age income \
-  --output-dir capabilities/marginal-analysis/results/run-2026-09-08
-```
+TEMP_WORKERS_NEEDED
 
-## Data contracts & privacy
+LABOR_COST
 
-- Input data should avoid PII unless analysis is allowed by policy. Document any sensitive fields used.
-- When storing per-instance outputs, prefer hashed or anonymized identifiers.
+BLENDED_RATE
 
-## Evaluation & Tests
+TOM_FERT_COST
 
-- Unit tests for numeric finite-difference computation (small synthetic model where expected deltas are known).
-- Integration tests with a toy model (logistic regression) on synthetic data to verify AME behavior and CI coverage.
-- CI should run a lightweight test to ensure no regressions to the computation API.
+CAR_FERT_COST
 
-## Error handling & logging
+MES_FERT_COST
 
-- Validate required inputs (dataset, model, features) and fail fast with clear error messages.
-- Log deterministic run metadata: timestamp, seed, feature list, model reference, input checksum.
-- On non-fatal issues (e.g., missing categories in baseline), emit warnings and include them in the report.
+TOTAL_FERTILIZER_COST
 
-## Outputs and reproducibility
+TOTAL_COST
 
-- Each run writes a manifest (manifest.json) with parameters, environment (python package versions), and a checksum of inputs and outputs.
-- Use the random_seed option to ensure reproducible bootstrap samples and subsampling.
+SEASON_PROFIT
 
-## CI / Performance considerations
+BEDS_CHECK
 
-- Support streaming evaluation and batching to handle large datasets without full in-memory materialization.
-- Provide a `--sample-frac` or `--max-samples` option to create fast CI-friendly runs.
+TEMP_CHECK
 
-## Conventions / Integration with AGENTS.md
+TOM_MC_SCHEDULE
 
-- Follow AGENTS.md for AI agent prompt formats, system message conventions, and logging when marginal-analysis is orchestrated by an agent.
-- If an AI agent is used to recommend analysis configurations, record the agent transcript per AGENTS.md rules and include references in the run manifest.
+CAR_MC_SCHEDULE
 
-## Example run
-
-A short example describing a typical run and interpreting outputs.
-
-1. Caller provides model and dataset, requests features [age, income].
-2. The capability computes predicted probability at baseline and after +5 years of age and +10% income.
-3. Results: mean probability change for +5 age = +0.03 (CI 0.02–0.04); for +10% income = -0.01 (CI -0.02–0.00).
-4. Report highlights statistical significance and caveats about correlated covariates.
-
-## Next steps
-
-- Implement a minimal Python reference implementation in capabilities/marginal-analysis/
-- Add unit and integration tests in tests/capabilities/test_marginal_analysis.py
-- Wire a simple CLI entrypoint and document usage in README.md under capabilities/marginal-analysis/
-
-
+MES_MC_SCHEDULE
