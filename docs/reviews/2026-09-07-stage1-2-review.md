@@ -1,62 +1,52 @@
 <!-- PR TARGET: https://github.com/mjcamba/Melveen-Janeen-Camba | Stage 1.2 -->
 # Stage 1.2 review — spec, build, audit
 
-**Spec:** [`capabilities/marginal-analysis/capabilities/marginal-analysis/spec.md`](https://github.com/mjcamba/Melveen-Janeen-Camba/blob/main/capabilities/marginal-analysis/capabilities/marginal-analysis/spec.md)
+> **Hurricane Lowell comes first.** If you are preparing, sheltering, travelling, or helping somebody else do one of those, put this review down — it will keep, and nothing in it needs your attention while that does. Look after your people first; we will sort the coursework out afterwards.
 
-> Graded 2026-09-07 against your commits of this morning. Six commits went in and none of them landed where the stage looks, and the file named model.xlsx is not a workbook. Everything below is about how to get the files into the right places — your plan for the model itself, which you wrote in the Stage 1.1 thread this morning, is correct.
+**Spec:** [`capabilities/marginal-analysis/spec.md`](https://github.com/mjcamba/Melveen-Janeen-Camba/blob/main/capabilities/marginal-analysis/spec.md)
+
+> Re-graded 2026-09-08. The previous pass found six commits and none of them at the graded path. What is there now is a real specification — detailed, organised, and buildable. What is missing is the workbook, and the two criteria that depend on it are the reason this is still held rather than entered.
 
 | Criterion | Where it stands |
 |---|---|
-| Spec completeness — inputs, structure, calculation flow | There is no specification. capabilities/marginal-analysis/spec.md does not exist. The file that does exist sits two folders deeper, at capabilities/marginal-analysis/capabilities/marginal-analysis/spec.md, and its contents are the critique prompt you meant to send to your assistant — "Here is my model specification. Do not rewrite it" and the three numbered requests — rather than the specification the prompt refers to. The small credit here is for capabilities/marginal-analysis/README.md, which is at the right path and is written in your own words. |
-| Spec validation rules | Nothing to assess — there is no specification for rules to live in. |
-| Workbook satisfies the contract | There is no workbook. The file at capabilities/marginal-analysis/capabilities/marginal-analysis/capabilities/marginal-analysis/model.xlsx is forty-two bytes of plain text, and the text is the line "capabilities/marginal-analysis/model.xlsx". It has an .xlsx name and no Excel content in it at all — Excel will not open it. |
-| Audit note | No audit note against a model, because there is no model. The credit is for the prompt-log entry for the brief, which records the critique prompt you used, what the assistant flagged and what you then changed yourself. That is the audit habit this stage wants, applied to the previous stage. |
+| Spec completeness — inputs, structure, calculation flow | A genuine specification. Every input named with a unit and a source, the labor functions with the exponent in the right place, revenue, fertilizer, the farmer-first allocation, the blended rate, profit, the constraint checks and the marginal-cost schedules, plus seventeen conventions and a definitions section. Three input values are rounded where they should be derived, and one cap is wrong. |
+| Spec validation rules | Structural validation, the q = 1 hand calculation, constraint checks, an independent cross-check, a two-starting-point Solver rule, and acceptance criteria naming the mix, the bed count, the profit and all three crossings. Complete for this criterion, and the crossings you predicted are the right ones. |
+| Workbook satisfies the contract | There is no model.xlsx in the repository. The earlier files at the wrong paths were deleted and nothing replaced them, so there is nothing to assess. |
+| Audit note | Cannot exist without a build. This is not a judgment about your work — the criterion has no input yet. |
 
-> Held rather than entered. Nothing is recorded against you while this stage is still open.
+### What you fixed, and it was the right fix
 
-### What actually happened, because it is worth understanding
+The last review's finding was that six commits had landed and none of them at the path that gets graded — there were nested folders like capabilities/capabilities/marginal-analysis, and a spec.md that was one byte.
 
-Your repository now contains capabilities/capabilities/marginal-analysis/, and capabilities/marginal-analysis/capabilities/marginal-analysis/, and one more level below that. That pattern comes from one specific thing.
+You deleted all of it and rebuilt at the correct path. That is the right response and it is a braver one than patching around the mess, which is what most people do. The path is clean now.
 
-When you use Add file, then Create new file on github.com, the filename box also accepts folders: any forward slash in it creates a directory. If you have already navigated into capabilities/marginal-analysis/ and then type the full path capabilities/marginal-analysis/spec.md into the name box, GitHub reads that as "make those two folders again, here" — which is exactly what it did, three times.
+### The three numbers to change before you build
 
-The fix is to type only the filename. Navigate into capabilities/marginal-analysis/, click Add file, Create new file, and type spec.md and nothing else. The breadcrumb above the box already shows the folder you are in.
+Your input tables carry CAR_HRS as 0.83, FARMER_LABOR_RATE as 34.72 and TEMP_LABOR_RATE as 17.36. All three are the case's printed display values, and all three are rounded.
 
-### And why model.xlsx is not a workbook
+The real ones are derivations. The farmer's rate is $50,000 across 1,440 hours. The temporary rate is $25,000 across 1,440 hours. Carrot labor is tomato labor divided by three — 0.8333…, and note that your 0.83 is rounded one place further than the case's own 0.833.
 
-The Create new file form makes text files only. It cannot produce an Excel workbook no matter what you name the file — naming a text file model.xlsx gives you a text file called model.xlsx, which is what happened.
+Your acceptance criterion says season profit must equal $42,762 when rounded to the nearest dollar. With those three rounded inputs it will not, and you will spend an evening looking for a bug that is not in your formulas. Fix them in the spec now, before the build, and the acceptance test will pass the first time.
 
-A workbook has to be built in Excel on your own machine, saved, and then uploaded. Navigate into capabilities/marginal-analysis/, click Add file, then Upload files — not Create new file — and drag the .xlsx in.
+### One cap is wrong, and the spec says it overrules me
 
-### The shortest path from here
+Your conventions section states that the authoritative bed caps are 14 tomato, 20 carrot and 30 mesclun, and that these limits override conflicting values from other materials.
 
-- Delete the three stray folders: capabilities/capabilities/, and everything under capabilities/marginal-analysis/capabilities/. Open each file, click the bin icon, commit. Deleting the last file in a folder removes the folder.
+The tomato cap in the case is 20, not 14. As it happens this changes nothing in the answer, because the optimum plants 10 tomato beds and 10 is under both numbers — so your model will still produce the right result.
 
-- Create capabilities/marginal-analysis/spec.md and write the specification into it — not the prompt about it. Inputs with values, units and sources; the sheets the workbook will contain; the labor function; how the farmer's 720 hours and the four temporary workers are consumed; the Solver setup; validation rules with tolerances.
+It is worth correcting anyway, for a reason that has nothing to do with this case. A specification that declares itself authoritative over its sources is making a strong claim, and the strength of the claim is exactly why a reader will trust it and not check. When you write "this overrides other materials", you are taking responsibility for having verified it. Keep the sentence — it is good practice to say which source wins — and make sure the value is right.
 
-- Then send that document through the critique prompt you already wrote. It is a good prompt and it worked well on your brief — it just needs a document under it.
+### What to do next, in order
 
-- Build the workbook in Excel from the finished specification, and upload it.
+- Change the three rounded inputs to their derivations and fix the tomato cap. Ten minutes in the spec.
 
-The order matters and is graded from your commit history: specification committed first, workbook second.
+- Build the workbook from the spec at capabilities/marginal-analysis/model.xlsx. Your calculation logic is complete enough that you can hand the specification to an assistant and have it build from the document rather than from a conversation — that is what the document is for.
 
-### Your question from this morning
+- Run Solver from both starting points you already named, and record what each returned.
 
-You asked how to make it clear that the labor compounding is crop-specific rather than shared across all crops. The answer is in the shape of the formula, and it is easier than the wording suggests.
+- Write the audit note: at least three checks, each saying what it would have caught, and any defect you found with what you did about it. Your validation section already lists the checks, so this is recording results rather than inventing tests.
 
-Each crop gets its own function, with its own bed count in the exponent and its own rate:
-
-- Tomatoes: hours = q x 2.50 x 36 x 1.10^q
-
-- Carrots: hours = q x (2.5/3) x 36 x 1.025^q
-
-- Mesclun: hours = q x 1.25 x 36 x 1.0125^q
-
-The q in each exponent is that crop's own bed count only. Planting a thirtieth mesclun bed does nothing to the tomato exponent. The three crops meet in exactly one place: you add the three hour figures together, and that total is what has to fit inside the farmer's 720 hours plus the temporary pool. The beds meet in one other place — the three bed counts have to add to 64 or fewer.
-
-So: three independent schedules, joined only by two shared constraints. That is precisely what you described in the thread, and writing those three lines into the specification is what makes it explicit.
-
-Your one-bed and ten-bed tomato checks are the right ones, and here are the values to test against: one bed is 99.0 hours exactly, and ten beds are 2,334.37. A model that has applied the multiplier once instead of compounding it will return 990 at ten beds, and the check catches it immediately.
+The spec-side criteria are most of the way there. The build and the audit are the half that is missing, and they are the half you can finish.
 
 ---
 
