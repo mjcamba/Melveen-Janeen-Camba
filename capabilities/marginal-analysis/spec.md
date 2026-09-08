@@ -1,3 +1,12 @@
+---
+type: spec
+capability: marginal-analysis
+engagement: perfect-competition
+date: 2026-08-26
+status: built            # draft | built | audited
+built_with: "Claude Code, from this file"
+---
+
 # Marginal Analysis Capability
 
 ## Summary
@@ -135,5 +144,4 @@ A short example describing a typical run and interpreting outputs.
 - Implement a minimal Python reference implementation in capabilities/marginal-analysis/
 - Add unit and integration tests in tests/capabilities/test_marginal_analysis.py
 - Wire a simple CLI entrypoint and document usage in README.md under capabilities/marginal-analysis/
-
 
