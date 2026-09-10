@@ -24,7 +24,7 @@ MES_BEDS = 0
 
 ### Starting Point 2
 
-TOM_BEDS = 14
+TOM_BEDS = 20
 
 CAR_BEDS =20
 
@@ -49,9 +49,9 @@ Objective: Maximize PROFIT
 | TOTAL_BED_CAP | 64 | beds | Case scenario |
 | FARMER_HOURS | 720 | field hours | Case scenario |
 | FARMER_SALARY | 50000 | USD per season | Case scenario |
-| FARMER_LABOR_RATE | 34.72 | USD per hour | Case scenario |
+| FARMER_LABOR_RATE | 50000 / 1440  | USD per hour | Case scenario |
 | TEMP_WORKER_SALARY | 25000 | USD per season | Case scenario |
-| TEMP_LABOR_RATE | 17.36 | USD per hour | Case scenario |
+| TEMP_LABOR_RATE | 25000 / 1440 | USD per hour | Case scenario |
 | TEMP_WORKER_HOURS | 1440 | hours per worker per season | Case scenario |
 | TEMP_WORKER_CAP | 4 | workers | Case scenario |
 
@@ -65,7 +65,7 @@ Objective: Maximize PROFIT
 | TOM_HRS | 2.50 | hours per week per bed | Crop table |
 | TOM_FERTILIZER | 880 | USD per bed | Farm Profit Lab |
 | TOM_DIM_PCT | 10.0% | diminishing-return rate | Farm Profit Lab |
-| TOM_MAX_BEDS | 14 | beds | Crop table |
+| TOM_MAX_BEDS | 20 | beds | Crop table |
 
 ---
 
@@ -74,7 +74,7 @@ Objective: Maximize PROFIT
 | Name | Value | Unit | Source |
 |--------|--------|--------|--------|
 | CAR_PRICE | 2094 | USD per bed | Crop table |
-| CAR_HRS | 0.83 | hours per week per bed | Crop table |
+| CAR_HRS | TOMATO_HRS / 3 | hours per week per bed | Crop table |
 | CAR_FERTILIZER | 440 | USD per bed | Farm Profit Lab |
 | CAR_DIM_PCT | 2.5% | diminishing-return rate | Farm Profit Lab |
 | CAR_MAX_BEDS | 20 | beds | Crop table |
