@@ -578,4 +578,41 @@ Run Solver from both starting points (0/0/0 and 20/0/0) and record whether the t
 
 ## Audit Status
 
-Audit: not yet performed — pending testing of the rebuilt workbook.
+## Audit Findings
+
+### Formula and Naming Check
+- TOM_BEDS: Verified workbook-level named range.
+- CAR_BEDS: Verified workbook-level named range.
+- MES_BEDS: Verified workbook-level named range.
+- PROFIT: Verified workbook-level named range.
+- Error scan with all bed counts set to zero: [result].
+
+### Hand Calculation Check
+- TOM_LABOR_HOURS(1) = [actual value].
+- Expected = 99.00.
+- Result: Pass/Fail.
+
+### Marginal Cost Cross-Check
+- Tomato MC(1) workbook value = [actual value].
+- Farm Profit Lab value = $4,317.50.
+- Result: Pass/Fail.
+
+### Solver Validation
+Run 1:
+- Result: [actual solution].
+
+Run 2:
+- Result: [actual solution].
+
+Converged to same solution:
+- Yes/No.
+
+### Acceptance Criteria
+- Tomatoes = [actual]
+- Carrots = [actual]
+- Mesclun = [actual]
+- Total Beds = [actual]
+- Profit = [actual]
+
+Result:
+- Pass/Fail
