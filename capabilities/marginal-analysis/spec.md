@@ -310,7 +310,7 @@ A workbook cell that displays PASS or FAIL based on whether a specified constrai
 
 17. The authoritative bed caps are:
 
-TOM_MAX_BEDS = 14
+TOM_MAX_BEDS = 20
 
 CAR_MAX_BEDS = 20
 
