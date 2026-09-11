@@ -431,44 +431,96 @@ Run Solver from both starting points (0/0/0 and 20/0/0) and record whether the t
 
 ## Audit Findings
 
-### Formula and Naming Check
-- TOM_BEDS: Verified workbook-level named range.
-- CAR_BEDS: Verified workbook-level named range.
-- MES_BEDS: Verified workbook-level named range.
-- PROFIT: Verified workbook-level named range.
-- Error scan with all bed counts set to zero: [result].
+### Audit 1: q=1 by hand
+Labor Hours = q × hrs/week × WEEKS × (1 + DIM%)^q
 
-### Hand Calculation Check
-- TOM_LABOR_HOURS(1) = [actual value].
-- Expected = 99.00.
-- Result: Pass/Fail.
+### For tomatoes at q1:
+= 1 × 2.5 × 36 × (1 + 0.10)^1
+= 90 × 1.10
+= 99.0 hours
 
-### Marginal Cost Cross-Check
-- Tomato MC(1) workbook value = [actual value].
-- Farm Profit Lab value = $4,317.50.
-- Result: Pass/Fail.
+### Audit 2: Cross-check one marginal cost against Farm Profit Lab logic
+Tomatoes:
+At q=5
+Variable Cost = 29,482.109375
 
-### Average Variable Cost Cross-Check
-- Tomato AVC(1) workbook value = [actual value].
-- Expected = $4,317.50.
-- Result: Pass/Fail.
+At q=6:
+Variable Cost = 34,388.384375
 
-### Solver Validation
-Run 1:
-- Result: [actual solution].
+Therefore:
+MC(6)
+= 34,388.384375 − 29,482.109375
+= 4,906.275
 
-Run 2:
-- Result: [actual solution].
+Workbook MC at q=6:
+4,906.275
 
-Converged to same solution:
-- Yes/No.
+Result: PASS. The MC schedule is internally consistent with the underlying variable-cost schedule. It also confirms the expected MC dip between q=5 and q=6.
 
-### Acceptance Criteria
-- Tomatoes = [actual]
-- Carrots = [actual]
-- Mesclun = [actual]
-- Total Beds = [actual]
-- Profit = [actual]
+### Audit 3: Two Solver starting points
+The workbook specification explicitly records:
+Starting Point 1
+TOM=0, CAR=0, MES=0
 
-Result:
-- Pass/Fail
+Starting Point 2
+TOM=20, CAR=0, MES=0
+
+and reports the same final optimum:
+TOM = 10
+CAR = 20
+MES = 30
+Profit = 42,761.66
+``
+The workbook includes both starting points as required. However, because the uploaded file content is a text extraction rather than a live workbook with Solver state, I cannot independently rerun Solver and verify convergence from each seed. I can verify only that both starting points are documented in the model.
+
+Result: DOCUMENTED, but Solver rerun not independently verified from the extracted workbook content.
+
+Audit 4: Check figures
+Acceptance criteria section:
+Tomato beds = 10     PASS
+Carrot beds = 20     PASS
+Mesclun beds = 30    PASS
+Beds used = 60       PASS
+Profit = 42,762      PASS
+Tomato labor hours q=1 = 99 PASS
+Tomato MC q=1 = 4,317.5 PASS
+Tomato AVC q=1 = 4,317.5 PASS
+P≈MC Tomato = 10 PASS
+P≈MC Carrot = 10 PASS
+P≈MC Mesclun = 6 PASS
+ALL ACCEPTANCE CRITERIA = PASS
+Result: PASS. Every published check figure matches its expected value.
+
+Audit 5: Formulas, not pasted values
+The strongest evidence in the workbook is the structural validation block:
+Calculated Model cells missing a formula = 0
+Decision-variable cells that are formulas = 0
+Model sheet cells with an error value = 0
+MC Schedule cells with an error value = 0
+Additionally, spot-checked values are mathematically linked to named inputs:
+
+Example:
+TOM_FERT_COST
+= TOM_BEDS × TOM_FERTILIZER
+= 10 × 880
+= 8,800
+which matches the workbook. Likewise:
+TOTAL_BEDS
+= TOM_BEDS + CAR_BEDS + MES_BEDS
+= 10 + 20 + 30
+= 60
+``
+matches the workbook output.
+Result: PASS based on the workbook's structural-validation checks and consistency of dependent calculations.
+
+| Audit                         | Result                                          |
+| ----------------------------- | ----------------------------------------------- |
+| 1. q=1 hand calculation       | ✅ PASS                                          |
+| 2. MC cross-check             | ✅ PASS                                          |
+| 3. Two Solver starting points | ⚠️ Documented; rerun not independently verified |
+| 4. Check figures              | ✅ PASS                                          |
+| 5. Formulas vs pasted values  | ✅ PASS                                          |
+
+Net: 4 passes and 1 qualified pass. The only item I cannot independently certify from the extracted workbook is Solver convergence from both starting points; everything else audits cleanly against the workbook contents.
+
+
