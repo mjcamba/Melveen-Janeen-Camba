@@ -1,3 +1,16 @@
+## Audit Findings — completed after workbook build
+
+
+Abbreviated names
+q_tomato
+q_carrot
+q_mesclun
+profit_total
+beds_total
+temp_needed
+temp_max
+
+
 ## Solver Decision Variables
 
 The following workbook-level named ranges are Solver changing cells:
@@ -26,9 +39,9 @@ MES_BEDS = 0
 
 TOM_BEDS = 20
 
-CAR_BEDS =20
+CAR_BEDS =0
 
-MES_BEDS = 30
+MES_BEDS = 0
 
 Solver Method:
 
@@ -38,6 +51,7 @@ Integer decisions required
 
 Objective: Maximize PROFIT
 
+Model’s blended rate is zero when total labor hours are zero.
 ---
 
 ## Farm Inputs
@@ -231,6 +245,7 @@ Calculate for:
 
 1 through MES_MAX_BEDS
 
+LABOR_COST formula charges only hours used at each labor rate, as the formula currently indicates, rather than treating either salary as an additional full fixed seasonal cost.
 ---
 
 ## Definitions
@@ -272,7 +287,22 @@ The published check figures and validation rules that the workbook must satisfy.
 
 A workbook cell that displays PASS or FAIL based on whether a specified constraint is satisfied.
 
+Focal crop's schedule:
+Set the other two crop quantities to zero.
+Evaluate the focal crop at q = 0 through its crop-specific maximum.
+Recalculate labor, labor cost, fertilizer cost, and cost at each quantity.
+Compute marginal cost as the change in cost between q − 1 and q
+
+The marginal-cost formula: 
+MCcrop(q)=TOTAL_COST crop alone (q)−TOTAL_COST crop alone (q−1)
+Each should report PASS or FAIL, and conditional formatting should make a passing constraint green and a failed constraint red.
 ---
+
+Add formula-based crop-cap checks:
+TOM_CAP_CHECK
+CAR_CAP_CHECK
+MES_CAP_CHECK
+
 
 ## Conventions
 
@@ -310,7 +340,7 @@ A workbook cell that displays PASS or FAIL based on whether a specified constrai
 
 17. The authoritative bed caps are:
 
-TOM_MAX_BEDS = 14
+TOM_MAX_BEDS = 20
 
 CAR_MAX_BEDS = 20
 
@@ -331,6 +361,18 @@ These limits override conflicting values from other materials.
 - No #N/A errors
 - Every calculated cell contains a formula
 
+TOM_BEDS >= 0 and integer
+CAR_BEDS >= 0 and integer
+MES_BEDS >= 0 and integer
+
+TOM_BEDS <= TOM_MAX_BEDS
+CAR_BEDS <= CAR_MAX_BEDS
+MES_BEDS <= MES_MAX_BEDS
+
+TOTAL_BEDS <= TOTAL_BED_CAP
+TEMP_WORKERS_NEEDED <= TEMP_WORKER_CAP
+
+
 ### Hand Calculation
 
 Tomato labor at q = 1:
@@ -348,6 +390,12 @@ TOTAL_BEDS <= 64
 TEMP_WORKERS_NEEDED <= 4
 
 Constraint cells must display PASS or FAIL.
+
+TOM_CAP_CHECK = IF(TOM_BEDS <= TOM_MAX_BEDS,"PASS","FAIL")
+CAR_CAP_CHECK = IF(CAR_BEDS <= CAR_MAX_BEDS,"PASS","FAIL")
+MES_CAP_CHECK = IF(MES_BEDS <= MES_MAX_BEDS,"PASS","FAIL")
+
+All PASS cells use a green fill and all FAIL cells use a red fill through conditional formatting.
 
 ### Intermediate MC Cross-Check
 
@@ -398,6 +446,8 @@ Mesclun ≈ 6 beds
 ---
 
 ## Outputs
+
+SEASON_PROFIT
 
 OPT_TOM_BEDS = final Solver value of TOM_BEDS
 
