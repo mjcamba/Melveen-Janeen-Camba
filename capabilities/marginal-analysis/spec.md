@@ -256,7 +256,13 @@ A workbook cell that displays PASS or FAIL based on whether a specified constrai
     - MES_MAX_BEDS = 30
 
     These limits override conflicting values from other materials.
-
+Item	Display precision
+Bed counts	Whole numbers
+Currency, revenue, cost, profit, MC, and AVC	Two decimal places
+Labor hours	Two decimal places
+Labor rates and blended labor rate	Two decimal places
+Temporary workers needed	Two decimal places
+Percentages	Two decimal places
 ---
 
 ## Validation Rules
