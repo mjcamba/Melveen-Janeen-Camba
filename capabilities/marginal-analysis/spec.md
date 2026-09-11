@@ -228,7 +228,12 @@ At q = 0, AVC is undefined and should be left blank. AVC represents the per-unit
 
 ### Standalone P ≈ MC Point
 
-The largest bed quantity q at which PRICE_PER_BED ≥ MC(q), evaluating that crop independently from the other crops.
+The largest bed quantity q at which PRICE_PER_BED ≥ MC(q), evaluating that crop independently from the other crops.  P ≈ MC point: The first production level q at which marginal cost (MC) equals or exceeds market price (P). Formally, the smallest q such that MC(q) ≥ P. This identifies the economic stopping point because the next unit no longer increases profit.  Applying that rule:  Applying that rule:
+
+Crop	Price P	First q where MC ≥ P	P ≈ MC pointTomatoes	$3,055	q = 10	~10 beds
+Carrots	$2,094	q = 10	~10 beds
+Mesclun	$741	q = 6	~6 beds
+MC is not strictly increasing for all crops; therefore the model reports the first MC crossover point rather than the last or closest crossover. Later MC declines do not alter the reported P ≈ MC point.
 
 ### Binding Constraint
 
@@ -258,7 +263,7 @@ A workbook cell that displays PASS or FAIL based on whether a specified constrai
 2. The first 720 field hours are permanent labor.
 3. Any labor beyond 720 hours is temporary labor.
 4. Permanent labor is costed before temporary labor.
-5. Labor is allocated to crops using the blended labor rate.
+5. Labor is allocated to crops using the blended labor rate. BLENDED_RATE is a reporting metric only. It represents total labor cost divided by total labor hours across all labor sources. No model calculations use BLENDED_RATE. Crop-level profitability is calculated directly from the underlying labor costs assigned during optimization and constraint evaluation.
 6. Crop labor allocation must not use separate labor rates by crop.
 7. Solver uses GRG Nonlinear.
 8. Decision variables must be integers.
