@@ -164,7 +164,7 @@ CAR_CAP_CHECK = IF(CAR_BEDS <= CAR_MAX_BEDS, "PASS", "FAIL")
 
 MES_CAP_CHECK = IF(MES_BEDS <= MES_MAX_BEDS, "PASS", "FAIL")
 
-### Marginal Cost Schedules
+### Marginal Cost and Average Variable Cost Schedules
 
 **Marginal Cost Definition for Standalone Crop Schedules:**
 
@@ -179,6 +179,8 @@ For each crop evaluated at quantity q (with the other two crops held at zero bed
 4. **Intermediate Cost Name:** Define an intermediate schedule-level cost as **TOM_SCHED_COST(q)**, **CAR_SCHED_COST(q)**, or **MES_SCHED_COST(q)** (depending on crop) to represent labor cost plus fertilizer cost at quantity q in the standalone schedule. This distinct name prevents confusion with the farm-level TOTAL_COST.
 
 5. **Marginal Cost Formula:** MC(q) = TOM_SCHED_COST(q) − TOM_SCHED_COST(q−1) (or the corresponding crop-specific schedule cost difference).
+
+6. **Average Variable Cost Formula:** AVC(q) = CROP_SCHED_COST(q) / q for q ≥ 1. At q = 0, leave AVC blank rather than displaying a division error.
 
 Calculated for:
 
@@ -200,7 +202,7 @@ For each crop's standalone schedule:
 
 ### Marginal Cost Schedule
 
-A table showing MC(q) for each crop from bed quantity 1 through the crop's maximum bed limit.
+A table showing MC(q) and AVC(q) for each crop from bed quantity 1 through the crop's maximum bed limit.
 Build separate standalone schedules for tomatoes, carrots, and mesclun.
 For each schedule, set the other two crop quantities to zero.
 Evaluate the focal crop from q = 0 through its own maximum-bed limit.
@@ -209,14 +211,20 @@ Calculate labor hours, labor cost (permanent-first), fertilizer cost, variable c
 Define variable cost as VARIABLE_COST(q) = LABOR_COST(q) + FERTILIZER_COST(q).
 Define schedule cost as CROP_SCHED_COST(q) = LABOR_COST(q) + FERTILIZER_COST(q) (the same as variable cost for the schedule).
 Define marginal cost as MC(q) = CROP_SCHED_COST(q) − CROP_SCHED_COST(q−1).
-Define average variable cost as AVC(q) = VARIABLE_COST(q) / q.
+Define average variable cost as AVC(q) = VARIABLE_COST(q) / q for q ≥ 1.
 At q = 0, leave AVC blank rather than displaying an error.
 Mark the largest quantity where the focal crop's price per bed is at least MC.
-Create one chart per crop showing price per bed and MC by quantity.
+Create one chart per crop showing price per bed, MC, and AVC by quantity.
 
 ### Marginal Cost
 
 MC(q) = CROP_SCHED_COST(q) − CROP_SCHED_COST(q−1), where CROP_SCHED_COST is the standalone schedule cost (labor using permanent-first allocation + fertilizer, excluding fixed costs).
+
+### Average Variable Cost
+
+AVC(q) = CROP_SCHED_COST(q) / q for q ≥ 1, where CROP_SCHED_COST is the standalone schedule cost (labor using permanent-first allocation + fertilizer, excluding fixed costs).
+
+At q = 0, AVC is undefined and should be left blank. AVC represents the per-unit variable cost and is used to evaluate the shutdown decision: a crop should not be planted if its price falls below AVC at all feasible quantities, because revenue would not cover the variable costs incurred.
 
 ### Standalone P ≈ MC Point
 
@@ -313,6 +321,12 @@ The relevant checks are:
 TOM_LABOR_HOURS(1) = 1 × 2.5 × 36 × 1.10 = 99.00
 
 MC_Tom(1) = (99 × (50,000 / 1,440)) + 880 = 4,317.50
+
+### Average Variable Cost Cross-Check
+
+Compare the tomato standalone AVC at q = 1 with hand calculation:
+
+AVC_Tom(1) = TOM_SCHED_COST(1) / 1 = [(99 × (50,000 / 1,440)) + 880] / 1 = 4,317.50
 
 ---
 
@@ -427,6 +441,11 @@ Run Solver from both starting points (0/0/0 and 20/0/0) and record whether the t
 ### Marginal Cost Cross-Check
 - Tomato MC(1) workbook value = [actual value].
 - Farm Profit Lab value = $4,317.50.
+- Result: Pass/Fail.
+
+### Average Variable Cost Cross-Check
+- Tomato AVC(1) workbook value = [actual value].
+- Expected = $4,317.50.
 - Result: Pass/Fail.
 
 ### Solver Validation
