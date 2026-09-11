@@ -18,7 +18,7 @@ These cells represent the number of beds planted for each crop and must be const
 
 - **Model** — inputs, decisions, formulas, outputs, Solver objective/constraints, checks
 - **MC Schedules** — standalone crop schedules, MC/AVC, price–MC markers, and charts
-All hardcoded inputs, decision variables, primary calculated outputs, PROFIT, and constraint-check cells must use workbook-level named ranges. Marginal-cost schedules may use worksheet tables or ranges on the MC Schedules sheet.
+All hardcoded inputs, decision variables, primary calculated outputs, PROFIT, and constraint-check cells must use workbook-level named ranges. Marginal-cost schedules may use worksheet tables or r[...]
 ---
 
 ## Farm Inputs
@@ -166,7 +166,19 @@ MES_CAP_CHECK = IF(MES_BEDS <= MES_MAX_BEDS, "PASS", "FAIL")
 
 ### Marginal Cost Schedules
 
-MC(q) = TOTAL_COST(q) − TOTAL_COST(q−1)
+**Marginal Cost Definition for Standalone Crop Schedules:**
+
+For each crop evaluated at quantity q (with the other two crops held at zero beds):
+
+1. **Schedule Basis:** The schedule is standalone — this crop at q beds, the other two crops at zero beds.
+
+2. **Cost Basis:** The cost basis includes labor and fertilizer only. Fixed costs are excluded because they cancel in the marginal-cost difference, and excluding them avoids reusing the farm-level TOTAL_COST name.
+
+3. **Labor Cost Calculation:** Labor uses the permanent-first split (permanent workers at FARMER_LABOR_RATE, then temporary workers at TEMP_LABOR_RATE), not a blended rate.
+
+4. **Intermediate Cost Name:** Define an intermediate schedule-level cost as **TOM_SCHED_COST(q)**, **CAR_SCHED_COST(q)**, or **MES_SCHED_COST(q)** (depending on crop) to represent labor cost plus fertilizer cost at quantity q in the standalone schedule. This distinct name prevents confusion with the farm-level TOTAL_COST.
+
+5. **Marginal Cost Formula:** MC(q) = TOM_SCHED_COST(q) − TOM_SCHED_COST(q−1) (or the corresponding crop-specific schedule cost difference).
 
 Calculated for:
 
@@ -174,13 +186,11 @@ Calculated for:
 - 1 through CAR_MAX_BEDS
 - 1 through MES_MAX_BEDS
 
-LABOR_COST charges only hours actually used at each labor rate, per the formula above, rather than treating either salary as an additional full fixed seasonal cost.
-
 For each crop's standalone schedule:
 
 - The other two crop bed counts are set to zero.
 - The focal crop is evaluated from zero through its maximum quantity.
-- Labor, fertilizer, total cost, marginal cost, and average variable cost are recalculated at each quantity.
+- Labor (using permanent-first allocation), fertilizer, schedule cost, marginal cost, and average variable cost are recalculated at each quantity.
 - The marginal-cost change is measured from the immediately preceding quantity.
 - The schedule visibly marks the largest quantity where the crop price remains at least as high as MC.
 
@@ -194,142 +204,19 @@ A table showing MC(q) for each crop from bed quantity 1 through the crop's maxim
 Build separate standalone schedules for tomatoes, carrots, and mesclun.
 For each schedule, set the other two crop quantities to zero.
 Evaluate the focal crop from q = 0 through its own maximum-bed limit.
-Include FIXED_COSTS in TOTAL_COST at every quantity, including q = 0.
-Calculate labor hours, labor cost, fertilizer cost, fixed cost, variable cost, total cost, MC, and AVC for every quantity.
-Define variable cost as 
-V
-A
-R
-I
-A
-B
-L
-E
-C
-O
-S
-T
-(
-q
-)
-=
-L
-A
-B
-O
-R
-C
-O
-S
-T
-(
-q
-)
-+
-F
-E
-R
-T
-I
-L
-I
-Z
-E
-R
-C
-O
-S
-T
-(
-q
-)
-VARIABLE 
-C
-​
- OST(q)=LABOR 
-C
-​
- OST(q)+FERTILIZER 
-C
-​
- OST(q) .
-Define marginal cost as 
-M
-C
-(
-q
-)
-=
-T
-O
-T
-A
-L
-C
-O
-S
-T
-(
-q
-)
-−
-T
-O
-T
-A
-L
-C
-O
-S
-T
-(
-q
-−
-1
-)
-MC(q)=TOTAL 
-C
-​
- OST(q)−TOTAL 
-C
-​
- OST(q−1) .
-Define average variable cost as 
-A
-V
-C
-(
-q
-)
-=
-V
-A
-R
-I
-A
-B
-L
-E
-C
-O
-S
-T
-(
-q
-)
-/
-q
-AVC(q)=VARIABLE 
-C
-​
- OST(q)/q .
+Exclude FIXED_COSTS; include only labor (using permanent-first allocation) and fertilizer cost in the schedule-level cost function.
+Calculate labor hours, labor cost (permanent-first), fertilizer cost, variable cost, schedule cost, MC, and AVC for every quantity.
+Define variable cost as VARIABLE_COST(q) = LABOR_COST(q) + FERTILIZER_COST(q).
+Define schedule cost as CROP_SCHED_COST(q) = LABOR_COST(q) + FERTILIZER_COST(q) (the same as variable cost for the schedule).
+Define marginal cost as MC(q) = CROP_SCHED_COST(q) − CROP_SCHED_COST(q−1).
+Define average variable cost as AVC(q) = VARIABLE_COST(q) / q.
 At q = 0, leave AVC blank rather than displaying an error.
-Mark the largest quantity where the focal crop’s price per bed is at least MC.
+Mark the largest quantity where the focal crop's price per bed is at least MC.
 Create one chart per crop showing price per bed and MC by quantity.
 
 ### Marginal Cost
 
-MC(q) = TOTAL_COST(q) − TOTAL_COST(q−1)
+MC(q) = CROP_SCHED_COST(q) − CROP_SCHED_COST(q−1), where CROP_SCHED_COST is the standalone schedule cost (labor using permanent-first allocation + fertilizer, excluding fixed costs).
 
 ### Standalone P ≈ MC Point
 
@@ -407,7 +294,7 @@ Percentages	Two decimal places
 - TEMP_WORKERS_NEEDED <= 4
 - TOM_CAP_CHECK, CAR_CAP_CHECK, MES_CAP_CHECK each evaluate TOM_BEDS/CAR_BEDS/MES_BEDS against their respective maximum
 
-All constraint-check cells (BEDS_CHECK, TEMP_CHECK, TOM_CAP_CHECK, CAR_CAP_CHECK, MES_CAP_CHECK) must display PASS or FAIL, with conditional formatting applying a green fill to PASS and a red fill to FAIL.
+All constraint-check cells (BEDS_CHECK, TEMP_CHECK, TOM_CAP_CHECK, CAR_CAP_CHECK, MES_CAP_CHECK) must display PASS or FAIL, with conditional formatting applying a green fill to PASS and a red fil[...]
 
 ### Hand Calculation Check
 
@@ -419,68 +306,13 @@ This must match the workbook calculation.
 
 ### Marginal Cost Cross-Check
 
-Compare at least one marginal-cost value generated by the workbook against the corresponding value from the Farm Profit Lab. Compare the tomato standalone marginal cost at q = 1 with the Farm Profit Lab. The expected labor requirement is 99.00 hours and expected marginal cost is $4,317.50. The workbook and Farm Profit Lab values must agree to the nearest cent. Record the compared Farm Profit Lab value and the result in Audit Findings.
+Compare at least one marginal-cost value generated by the workbook against the corresponding value from the Farm Profit Lab. Compare the tomato standalone marginal cost at q = 1 with the Farm Pro[...]
 
 The relevant checks are:
 
-T
-O
-M
-L
-A
-B
-O
-R
-H
-O
-U
-R
-S
-(
-1
-)
-=
-1
-×
-2.5
-×
-36
-×
-1.10
-=
-99.00
-TOM 
-L
-​
- ABOR 
-H
-​
- OURS(1)=1×2.5×36×1.10=99.00
+TOM_LABOR_HOURS(1) = 1 × 2.5 × 36 × 1.10 = 99.00
 
-M
-C
-Tom
-(
-1
-)
-=
-(
-99
-×
-(
-50,000
-/
-1,440
-)
-)
-+
-880
-=
-4,317.50
-MC 
-Tom
-​
- (1)=(99×(50,000/1,440))+880=4,317.50
+MC_Tom(1) = (99 × (50,000 / 1,440)) + 880 = 4,317.50
 
 ---
 
