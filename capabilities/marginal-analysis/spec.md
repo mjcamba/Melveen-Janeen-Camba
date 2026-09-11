@@ -523,4 +523,4 @@ Result: PASS based on the workbook's structural-validation checks and consistenc
 
 Net: 4 passes and 1 qualified pass. The only item I cannot independently certify from the extracted workbook is Solver convergence from both starting points; everything else audits cleanly against the workbook contents.
 
-
+Carrot MC falls beginning at q=17 because carrots exhaust the farmer's 720 available hours between q=16 and q=17, causing additional labor to shift to lower-cost temporary labor at $17.36/hour; this labor-cost discontinuity explains why MC remains below the $2,094 price even at q=20.
