@@ -28,10 +28,14 @@ Hawai'i Department of Health (DOH) because the measurable outcome involves medic
 ## Sources
 
 a. Hawai'i Department of Health, Maui Wildfires Public Health Rapid Needs Assessment to establish event, immediate impacts, household health/access needs
+
 b. U.S. Bureau of Labor Statistics CPI-U, Food at Home, Urban Hawaii to establish grocery price environment surrounding disaster.  The Urban Hawaii CPI is used to provide context on the essential-goods price environment, while MauiWES provides the primary evidence on distributional health and household impacts.
+
 c. UHERO Maui Wildfire Exposure Study, 2024 for income household comparison and test hypothesis
+
 d. MauiWES to show secondary evidence of economic hardship and necessity-budget pressure
 September 27, 2026 as your retrieval date if you enter these sources into the repository today.
+
 ## Deliverable
 
 `analysis/research-paper.pdf`, with figures in `analysis/figures/` and working
