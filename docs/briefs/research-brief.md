@@ -2,10 +2,6 @@
 
 Address the rising prices and disaster recovery are also health issues.  Public health and nursing community see the consequences not just as higher expenses, but as risks to chronic disease management, mental health, nutrition, transportation to care, medication, and access to resources.  I will examine how disasters and Hawai'i's dependence on imported food and fuel contribute to high living costs and health inequities.  Using public health nursing and occupational health nursing perspectives, I will analyze how higher food and gasoline prices affect food security, access to health care, chronic-disease management, and worker safety.  
 
-## Status
-
-Skeleton. Headings below are mine to fill in.
-
 ## The question
 
 I am asking how environmental disruption becomes an economic and health problem in Hawai'i.  What happens economically?  When disasters, shipping delays, or higher fuel costs disrupt supply, prices for necessities such as food, gas, and electricity can rise.
