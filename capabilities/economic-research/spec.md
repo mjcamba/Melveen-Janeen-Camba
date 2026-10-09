@@ -4,10 +4,6 @@ Sources, model, figures, success criteria
 
 This is the focus of my research on the 2023 Maui wildfires and the disproportionate economic and health burdens experienced by lower-income households after August 8, 2023.  
 
-## Status
-
-Skeleton. Sections below are placeholders for me to fill in.
-
 ## Research question
 
 These consequences raise an important economic question: were the burdens of the disaster distributed equally among households with different financial resources?  Following the Maui wildfires on August 8, 2023, did households below the poverty line experience greater difficult accessing food, medical care and medications than households above the poverty line?  
